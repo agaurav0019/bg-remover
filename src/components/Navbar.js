@@ -6,7 +6,7 @@ const Navbar = () => {
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
-          <div className="navbar-brand">
+          <div className="navbar-brand fw-bold">
             BgRemover
           </div>
         </div>
