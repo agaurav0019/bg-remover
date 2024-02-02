@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Body.css";
 import ImageCapture from "../imageCapture/ImageCapture";
+import FaceDetection from "../faceDetection/FaceDetection";
 
 const Body = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -8,6 +9,8 @@ const Body = () => {
   const [webCamblobImg, setWebcamBlobImg] = useState(null);
   const [takeSelfie, setTakeSelfie] = useState(false);
   const [removedBackground, setRemovedBackground] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
 
   const onSelfieButtonHandler = () => {
     setTakeSelfie(true);
@@ -46,8 +49,10 @@ const Body = () => {
     return new Blob([arrayBuffer], { type });
   }
 
-  const handleRemoveBackground = async () => {
-    const image = selectedImage || webCamblobImg;
+  const handleRemoveBackground = async (isOriginal) => {
+    setShowLoader(true);
+    const blob = croppedImage && dataURLtoBlob(croppedImage);
+    const image = isOriginal ? selectedImage || webCamblobImg : blob;
     const apiKey = "gmtqSpEVk4tTU5jXwqrjpq31";
     const apiUrl = "https://api.remove.bg/v1.0/removebg";
 
@@ -69,13 +74,29 @@ const Body = () => {
       const reader = new FileReader();
       reader.onloadend = () => setRemovedBackground(reader.result);
       reader.readAsDataURL(data);
+      setShowLoader(false);
     } catch (error) {
       console.log(error);
+      setShowLoader(false);
     }
+  };
+
+  const getCroppedImage = (event) => {
+    setCroppedImage(event);
   };
 
   return (
     <>
+      {showLoader && (
+        <>
+          <div className="wrapper"></div>
+          <div className="overlay show"></div>
+          <div className="spanner show">
+            <div className="loader"></div>
+            <p>In Progress</p>
+          </div>
+        </>
+      )}
       <div className="mt-4">
         <div className="mt-4 p-3">
           <div className="text-white fs-3 fw-bold mb-3 mt-4 text-center">
@@ -113,36 +134,56 @@ const Body = () => {
             ) : (
               (WebCamImage || selectedImage) && (
                 <>
-                  <img
-                    src={
-                      WebCamImage
-                        ? WebCamImage
-                        : selectedImage
-                        ? URL.createObjectURL(selectedImage)
-                        : ""
-                    }
-                    className="img-thumbnail rounded img-custom m-2"
-                    alt=""
-                  />
-                  {!removedBackground && (
+                  <div>
+                    <FaceDetection
+                      getCroppedImage={getCroppedImage}
+                      imgUrl={
+                        WebCamImage
+                          ? WebCamImage
+                          : selectedImage
+                          ? URL.createObjectURL(selectedImage)
+                          : ""
+                      }
+                    ></FaceDetection>
+                  </div>
+                  {removedBackground && (
                     <div>
-                      <button
-                        className="btn btn-md btn-danger mt-3"
-                        onClick={handleRemoveBackground}
-                      >
-                        Erase background
-                      </button>
+                      <img
+                        className="img-thumbnail rounded img-custom m-2"
+                        src={removedBackground}
+                        alt="img"
+                      />
                     </div>
+                  )}
+                  {!removedBackground && (
+                    <>
+                      <h2 className="mt-3">Erase Background</h2>
+                      <div className="d-flex justify-content-center">
+                        <div className="m-2">
+                          <button
+                            className="btn btn-md btn-danger mt-3"
+                            onClick={() => {
+                              handleRemoveBackground(true);
+                            }}
+                          >
+                            Original Image
+                          </button>
+                        </div>
+                        <div className="m-2">
+                          <button
+                            className="btn btn-md btn-danger mt-3"
+                            onClick={() => {
+                              handleRemoveBackground(false);
+                            }}
+                          >
+                            Cropped Img
+                          </button>
+                        </div>
+                      </div>
+                    </>
                   )}
                 </>
               )
-            )}
-            {removedBackground && (
-              <img
-                className="img-thumbnail rounded img-custom m-2"
-                src={removedBackground}
-                alt="img"
-              />
             )}
           </div>
           {removedBackground && (

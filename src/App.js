@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar";
 import Body from "./components/body/Body";
+import FaceDetection from "./components/faceDetection/FaceDetection";
 
 function App() {
 
@@ -7,6 +8,7 @@ function App() {
     <div className="App">
       <Navbar></Navbar>
       <Body></Body>
+      {/* <FaceDetection></FaceDetection> */}
     </div>
   );
 }
