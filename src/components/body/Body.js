@@ -83,22 +83,26 @@ const Body = () => {
           </div>
           <div className="mb-3">
             <div className="d-flex justify-content-center mb-3">
-              <input
-                type="file"
-                accept=".jpg, .jpeg, .png, .gif"
-                className="form-control w-75"
-                onChange={onImageChangeHandler}
-              ></input>
-            </div>
-          </div>
-          <div className="d-flex justify-content-center mb-3">
-            <div>
-              <button
-                className="btn btn-md btn-primary me-2"
-                onClick={onSelfieButtonHandler}
-              >
-                Take Selfie
-              </button>
+              <div className="d-flex btn-container">
+                <div className="file">
+                  <label htmlFor="input-file">Select a file</label>
+                  <input
+                    id="input-file"
+                    type="file"
+                    accept=".jpg, .jpeg, .png, .gif"
+                    className="form-control w-75"
+                    onChange={onImageChangeHandler}
+                  />
+                </div>
+                <div>
+                  <button
+                    className="btn btn-md capture-image"
+                    onClick={onSelfieButtonHandler}
+                  >
+                    Take Selfie
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           <div className="container text-center mt-5">
