@@ -13,6 +13,8 @@ const Body = (props) => {
   const onSelfieButtonHandler = () => {
     setTakeSelfie(true);
     setRemovedBackground(null);
+    setWebcamImage(null);
+    setSelectedImage(null)
   };
 
   const onImageChangeHandler = (event) => {
@@ -103,14 +105,6 @@ const Body = (props) => {
                 Take Selfie
               </button>
             </div>
-            <div>
-              <button
-                className="btn btn-md btn-danger"
-                onClick={handleRemoveBackground}
-              >
-                Erase background
-              </button>
-            </div>
           </div>
           <div className="container text-center mt-5">
             {takeSelfie && (
@@ -119,18 +113,38 @@ const Body = (props) => {
               ></ImageCapture>
             )}
             {WebCamImage && !imageWithoutBackground && (
-              <img
-                src={WebCamImage}
-                className="img-thumbnail rounded img-custom"
-                alt=""
-              />
+              <>
+                <img
+                  src={WebCamImage}
+                  className="img-thumbnail rounded img-custom"
+                  alt=""
+                />
+                <div>
+                  <button
+                    className="btn btn-md btn-danger mt-3"
+                    onClick={handleRemoveBackground}
+                  >
+                    Erase background
+                  </button>
+                </div>
+              </>
             )}
             {selectedImage && !takeSelfie && !imageWithoutBackground && (
-              <img
-                src={selectedImage ? URL.createObjectURL(selectedImage) : ""}
-                className="img-thumbnail rounded img-custom"
-                alt=""
-              />
+              <>
+                <img
+                  src={selectedImage ? URL.createObjectURL(selectedImage) : ""}
+                  className="img-thumbnail rounded img-custom"
+                  alt=""
+                />
+                <div>
+                  <button
+                    className="btn btn-md btn-danger mt-3"
+                    onClick={handleRemoveBackground}
+                  >
+                    Erase background
+                  </button>
+                </div>
+              </>
             )}
             {removedBackground && imageWithoutBackground && (
               <img
