@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./Body.css";
 import ImageCapture from "../imageCapture/ImageCapture";
 
-const Body = (props) => {
+const Body = () => {
+  debugger;
   const [selectedImage, setSelectedImage] = useState(null);
   const [WebCamImage, setWebcamImage] = useState(null);
   const [webCamblobImg, setWebcamBlobImg] = useState(null);
   const [takeSelfie, setTakeSelfie] = useState(false);
   const [removedBackground, setRemovedBackground] = useState(null);
-  const [imageWithoutBackground, setImageWithoutBackground] = useState(false);
 
   const onSelfieButtonHandler = () => {
     setTakeSelfie(true);
     setRemovedBackground(null);
     setWebcamImage(null);
-    setSelectedImage(null)
+    setSelectedImage(null);
   };
 
   const onImageChangeHandler = (event) => {
+    debugger;
     setSelectedImage(event.target.files[0]);
     setWebcamImage(null);
     setWebcamBlobImg(null);
     setRemovedBackground(null);
+    setTakeSelfie(false);
   };
 
   const capturedImageData = (e) => {
@@ -68,15 +70,10 @@ const Body = (props) => {
 
       const reader = new FileReader();
       reader.onloadend = () => setRemovedBackground(reader.result);
-      setImageWithoutBackground(true);
       reader.readAsDataURL(data);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const onToggleBtn = () => {
-    setImageWithoutBackground((prev) => !prev);
   };
 
   return (
@@ -107,48 +104,40 @@ const Body = (props) => {
             </div>
           </div>
           <div className="container text-center mt-5">
-            {takeSelfie && (
+            {takeSelfie ? (
               <ImageCapture
                 capturedImageData={capturedImageData}
               ></ImageCapture>
+            ) : (
+              (WebCamImage || selectedImage) && (
+                <>
+                  <img
+                    src={
+                      WebCamImage
+                        ? WebCamImage
+                        : selectedImage
+                        ? URL.createObjectURL(selectedImage)
+                        : ""
+                    }
+                    className="img-thumbnail rounded img-custom m-2"
+                    alt=""
+                  />
+                  {!removedBackground && (
+                    <div>
+                      <button
+                        className="btn btn-md btn-danger mt-3"
+                        onClick={handleRemoveBackground}
+                      >
+                        Erase background
+                      </button>
+                    </div>
+                  )}
+                </>
+              )
             )}
-            {WebCamImage && !imageWithoutBackground && (
-              <>
-                <img
-                  src={WebCamImage}
-                  className="img-thumbnail rounded img-custom"
-                  alt=""
-                />
-                <div>
-                  <button
-                    className="btn btn-md btn-danger mt-3"
-                    onClick={handleRemoveBackground}
-                  >
-                    Erase background
-                  </button>
-                </div>
-              </>
-            )}
-            {selectedImage && !takeSelfie && !imageWithoutBackground && (
-              <>
-                <img
-                  src={selectedImage ? URL.createObjectURL(selectedImage) : ""}
-                  className="img-thumbnail rounded img-custom"
-                  alt=""
-                />
-                <div>
-                  <button
-                    className="btn btn-md btn-danger mt-3"
-                    onClick={handleRemoveBackground}
-                  >
-                    Erase background
-                  </button>
-                </div>
-              </>
-            )}
-            {removedBackground && imageWithoutBackground && (
+            {removedBackground && (
               <img
-                className="img-thumbnail rounded img-custom"
+                className="img-thumbnail rounded img-custom m-2"
                 src={removedBackground}
                 alt="img"
               />
@@ -156,19 +145,13 @@ const Body = (props) => {
           </div>
           {removedBackground && (
             <div className="d-flex form-check form-switch justify-content-center mt-5">
-              <input
-                className="form-check-input me-2"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-                onChange={onToggleBtn}
-              />
-              <label
-                className="form-check-label"
-                htmlFor="flexSwitchCheckDefault"
+              <a
+                className="w-full"
+                href={removedBackground}
+                download={"save.png"}
               >
-                Toggle between old and new image
-              </label>
+                <button className="btn btn-success btn-md">Download</button>
+              </a>
             </div>
           )}
         </div>
