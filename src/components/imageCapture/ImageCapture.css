@@ -1,4 +1,16 @@
 .canvas-custom{
-    height: 300px !important;
+    max-height: 300px !important;
     width: auto !important;
 }
+
+.video-container {
+    width: 100%;
+    overflow: hidden; /* Ensure the video doesn't overflow its container */
+  }
+
+  @media screen and (max-width:480px) {
+    .canvas-custom {
+        max-height: 200px !important;
+        width: auto !important;
+    }
+  }

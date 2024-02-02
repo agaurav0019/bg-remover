@@ -52,10 +52,12 @@ const ImageCapture = (props) => {
 
   return (
     <div className="container">
-      <video className="container canvas-custom" ref={videoRef}></video>
+      <div className="video-container">
+        <video className="canvas-custom" ref={videoRef}></video>
+      </div>
       <div>
-        <button className="btn btn-danger" onClick={captureImageHandler}>
-          Take Selfie
+        <button className="btn btn-danger mt-3" onClick={captureImageHandler}>
+          Capture
         </button>
       </div>
     </div>

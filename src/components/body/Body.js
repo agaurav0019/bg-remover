@@ -3,7 +3,6 @@ import "./Body.css";
 import ImageCapture from "../imageCapture/ImageCapture";
 
 const Body = () => {
-  debugger;
   const [selectedImage, setSelectedImage] = useState(null);
   const [WebCamImage, setWebcamImage] = useState(null);
   const [webCamblobImg, setWebcamBlobImg] = useState(null);
@@ -18,7 +17,6 @@ const Body = () => {
   };
 
   const onImageChangeHandler = (event) => {
-    debugger;
     setSelectedImage(event.target.files[0]);
     setWebcamImage(null);
     setWebcamBlobImg(null);
