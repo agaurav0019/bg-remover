@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Deployed Application link
+
+Navigate through this link [https://bground-remover.netlify.app/](https://bground-remover.netlify.app/) to view the deployed application.
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -9,8 +13,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open (https://bground-remover.netlify.app/) to view deployed application in your browser.
-Or
+
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
