@@ -9,6 +9,8 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
+Open (https://bground-remover.netlify.app/) to view deployed application in your browser.
+Or
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
